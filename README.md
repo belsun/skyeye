@@ -6,11 +6,11 @@ SkyEye is a personal market-intelligence dashboard for learning-driven investing
 
 ## Product Preview
 
-![Opportunity Radar](docs/media/showcase-01-radar.png)
+![News sentiment explains K-line](docs/media/real-showcase-01-news-kline.png)
 
-![Company Profile](docs/media/showcase-02-company.png)
+![Filtered market intelligence dashboard](docs/media/real-showcase-02-radar-dashboard.png)
 
-![Paper Trading](docs/media/showcase-03-paper.png)
+![Company decisions to macro insight](docs/media/real-showcase-03-company-to-macro.png)
 
 ## 15-Second Launch Videos
 

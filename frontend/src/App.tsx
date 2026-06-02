@@ -87,25 +87,41 @@ type ThemeMode = 'midnight' | 'hk' | 'terminal' | 'sakura' | 'daylight' | 'auror
 type LanguageMode = 'zh' | 'en' | 'both';
 type LearningMode = 'learning' | 'pro';
 
+const THEME_MODES = ['midnight', 'hk', 'terminal', 'sakura', 'daylight', 'aurora'] as const;
+const LANGUAGE_MODES = ['zh', 'en', 'both'] as const;
+const LEARNING_MODES = ['learning', 'pro'] as const;
+
+function readUrlParam(name: string): string | null {
+  try {
+    return new URLSearchParams(window.location.search).get(name);
+  } catch {
+    return null;
+  }
+}
+
 function readStoredMode<T extends string>(key: string, fallback: T, allowed: readonly T[]): T {
+  const urlValue = readUrlParam(key.replace('skyeye.', '')) as T | null;
+  if (urlValue && allowed.includes(urlValue)) return urlValue;
   const stored = window.localStorage.getItem(key) as T | null;
   return stored && allowed.includes(stored) ? stored : fallback;
 }
 
 export default function App() {
   // ===== Top-level state =====
-  const [activeTab, setActiveTab] = useState('overview');
-  const [viewMode, setViewMode] = useState<ViewMode>('overview');
-  const [selectedSymbol, setSelectedSymbol] = useState<string>('');
+  const initialSymbol = (readUrlParam('symbol') || '').toUpperCase();
+  const initialTab = readUrlParam('tab') || 'overview';
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [viewMode, setViewMode] = useState<ViewMode>(initialSymbol ? 'deep' : 'overview');
+  const [selectedSymbol, setSelectedSymbol] = useState<string>(initialSymbol);
   const [tickers, setTickers] = useState<string[]>([]);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() =>
-    readStoredMode<ThemeMode>('skyeye.theme', 'midnight', ['midnight', 'hk', 'terminal', 'sakura', 'daylight', 'aurora'])
+    readStoredMode<ThemeMode>('skyeye.theme', 'midnight', THEME_MODES)
   );
   const [languageMode, setLanguageMode] = useState<LanguageMode>(() =>
-    readStoredMode<LanguageMode>('skyeye.language', 'both', ['zh', 'en', 'both'])
+    readStoredMode<LanguageMode>('skyeye.language', 'both', LANGUAGE_MODES)
   );
   const [learningMode, setLearningMode] = useState<LearningMode>(() =>
-    readStoredMode<LearningMode>('skyeye.learningMode', 'learning', ['learning', 'pro'])
+    readStoredMode<LearningMode>('skyeye.learningMode', 'learning', LEARNING_MODES)
   );
   const [showQuantTools, setShowQuantTools] = useState(false);
 

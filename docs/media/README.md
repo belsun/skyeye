@@ -13,8 +13,17 @@ Generated product-launch visuals for README, GitHub social preview, and Codex de
 
 ## Product showcase images
 
+- `real-showcase-01-news-kline.png`
+- `real-showcase-02-radar-dashboard.png`
+- `real-showcase-03-company-to-macro.png`
 - `showcase-01-radar.png`
 - `showcase-02-company.png`
 - `showcase-03-paper.png`
 - `showcase-04-themes.png`
 - `showcase-05-cache.png`
+
+## Raw real UI screenshots
+
+- `screenshots/real-overview-ready.png`
+- `screenshots/real-nvda-deep-ready.png`
+- `screenshots/real-minimax-deep.png`

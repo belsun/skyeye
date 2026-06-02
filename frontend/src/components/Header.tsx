@@ -7,10 +7,10 @@ interface Props {
   selectedSymbol: string;
   onBack: () => void;
   onSearchSelect: (symbol: string) => void;
-  themeMode: 'midnight' | 'hk' | 'terminal';
+  themeMode: 'midnight' | 'hk' | 'terminal' | 'sakura' | 'daylight' | 'aurora';
   languageMode: 'zh' | 'en' | 'both';
   learningMode: 'learning' | 'pro';
-  onThemeChange: (mode: 'midnight' | 'hk' | 'terminal') => void;
+  onThemeChange: (mode: 'midnight' | 'hk' | 'terminal' | 'sakura' | 'daylight' | 'aurora') => void;
   onLanguageChange: (mode: 'zh' | 'en' | 'both') => void;
   onLearningModeChange: (mode: 'learning' | 'pro') => void;
 }
@@ -169,11 +169,14 @@ export default function Header({
             className="theme-select"
             value={themeMode}
             title="配色方案 / Theme"
-            onChange={(e) => onThemeChange(e.target.value as 'midnight' | 'hk' | 'terminal')}
+            onChange={(e) => onThemeChange(e.target.value as 'midnight' | 'hk' | 'terminal' | 'sakura' | 'daylight' | 'aurora')}
           >
             <option value="midnight">深夜蓝</option>
             <option value="hk">港股科技</option>
             <option value="terminal">交易终端</option>
+            <option value="sakura">樱粉少女</option>
+            <option value="daylight">晨光白</option>
+            <option value="aurora">紫青灵感</option>
           </select>
           <div className="lang-toggle" title="语言 / Language">
             {(['zh', 'en', 'both'] as const).map((mode) => (

@@ -1,22 +1,30 @@
 # SkyEye
 
-SkyEye is a personal market-intelligence dashboard for learning-driven investing. It combines news, event monitoring, IPO watchlists, supply-chain mapping, technical signals, and paper trading into one research workflow.
+SkyEye is a personal market-intelligence dashboard for learning-driven investing. It connects market narratives, company profiles, news, events, IPO watchlists, supply-chain themes, K-line context, and dual-currency paper trading.
 
-The project is designed for a beginner investor who wants to understand market narratives before placing real trades. SkyEye does not place live orders and does not provide financial advice.
+> Research and paper trading only. SkyEye does not place live orders and does not provide financial advice.
+
+## Product Preview
+
+![Opportunity Radar](docs/media/showcase-01-radar.png)
+
+![Company Profile](docs/media/showcase-02-company.png)
+
+![Paper Trading](docs/media/showcase-03-paper.png)
+
+## 15-Second Launch Videos
+
+- [Opportunity Radar](docs/media/01-opportunity-radar.mp4)
+- [Company Profile](docs/media/02-company-profile.mp4)
+- [Paper Trading](docs/media/03-paper-trading.mp4)
 
 ## Highlights
 
 - Opportunity Radar: turns news, events, IPOs, catalyst data, and trade setups into research alerts.
+- Company Profile: shows what a company does, website, filings, financial links, sector, industry, and recent local news index.
 - Dual-currency paper books: HKD paper book for Hong Kong equities and USD paper book for US equities.
 - News-to-price workflow: aligns news dates with OHLC data, K-line views, sentiment, and follow-up watch points.
-- Beginner-friendly research panels: risk brief, support/stop/target references, portfolio planning, and quant-learning modules.
-- Hong Kong and US focus: HK IPO/new economy watch, AI applications, AI compute/HBM, robotics, crypto infrastructure, and macro liquidity.
-
-## Tech Stack
-
-- Backend: FastAPI, SQLite, yfinance, Polygon-compatible news ingestion.
-- Frontend: React, TypeScript, Vite, D3.
-- ML/research layer: scikit-learn-style feature engineering, catalyst scoring, trade setup analysis, and paper-performance tracking.
+- Theme system: deep terminal looks plus brighter themes such as Sakura, Daylight, and Aurora.
 
 ## Local Setup
 
@@ -37,48 +45,9 @@ python server.py
 
 Open `http://localhost:8888`.
 
-## Environment
+## Safety
 
-Create `.env` from `.env.example`.
-
-```bash
-POLYGON_API_KEY=
-OPENAI_API_KEY=
-AI_API_KEY=
-AI_API_BASE=https://api.openai.com/v1
-DATABASE_PATH=skyeye.db
-```
-
-API keys are optional for basic local UI exploration. Some news and AI-analysis features require external providers.
-
-## Core APIs
-
-- `GET /api/opportunity-radar?market=all|hk|us&lookback_days=10&mode=balanced`
-- `GET /api/paper/books`
-- `POST /api/paper/orders`
-- `GET /api/paper/performance?book=hkd|usd&window_days=20`
-- `GET /api/events`
-- `GET /api/news/{symbol}`
-- `GET /api/kline/{symbol}`
-
-## Safety Notes
-
-- This repository excludes local `.env`, SQLite databases, model artifacts, caches, and generated build assets.
+- Local `.env`, SQLite databases, model artifacts, caches, and generated build assets are excluded from the public repository.
 - Paper trading is simulation only.
-- Support, stop, and target values are research references, not live trading instructions.
-- HKD and USD paper books are intentionally not FX-converted.
-
-## Why This Project
-
-SkyEye explores how Codex can help a solo builder turn scattered market ideas into a working product loop:
-
-1. Detect a market narrative or event.
-2. Connect it to affected symbols and upstream/downstream industries.
-3. Show evidence and risks.
-4. Place a simulated trade in the correct currency book.
-5. Review performance and improve the thesis.
-
-## License
-
-MIT
-
+- HKD and USD books are intentionally not FX-converted.
+- News storage is designed around metadata and analysis indexes, not full article archives.

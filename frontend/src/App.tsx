@@ -83,7 +83,7 @@ const TABS = [
 ];
 
 type ViewMode = 'overview' | 'deep';
-type ThemeMode = 'midnight' | 'hk' | 'terminal';
+type ThemeMode = 'midnight' | 'hk' | 'terminal' | 'sakura' | 'daylight' | 'aurora';
 type LanguageMode = 'zh' | 'en' | 'both';
 type LearningMode = 'learning' | 'pro';
 
@@ -99,7 +99,7 @@ export default function App() {
   const [selectedSymbol, setSelectedSymbol] = useState<string>('');
   const [tickers, setTickers] = useState<string[]>([]);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() =>
-    readStoredMode<ThemeMode>('skyeye.theme', 'midnight', ['midnight', 'hk', 'terminal'])
+    readStoredMode<ThemeMode>('skyeye.theme', 'midnight', ['midnight', 'hk', 'terminal', 'sakura', 'daylight', 'aurora'])
   );
   const [languageMode, setLanguageMode] = useState<LanguageMode>(() =>
     readStoredMode<LanguageMode>('skyeye.language', 'both', ['zh', 'en', 'both'])

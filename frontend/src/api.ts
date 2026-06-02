@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type {
   MarketOverviewData, SectorItem, NewsFeedData, GeopoliticalData,
-  SentimentPoint, TrendingData, EventsData, SearchData, OHLCRow,
+  SentimentPoint, TrendingData, EventsData, SearchData, CompanyProfile, OHLCRow,
   Particle, StockNewsItem, CategoriesResponse, Forecast,
   SimilarDaysData, RangeAnalysis, RangeNewsResponse, SectorAnalysisData,
   ActionCenter, CatalystRadar, DecisionBoard, PortfolioHoldings, PortfolioPlan, PortfolioPositionInput,
@@ -92,6 +92,9 @@ export const fetchEvents = () =>
 
 export const fetchSearch = (query: string) =>
   api.get<SearchData>(`/search/${encodeURIComponent(query)}`).then(r => r.data);
+
+export const fetchCompanyProfile = (symbol: string, refresh = false) =>
+  api.get<CompanyProfile>(`/stocks/${encodeURIComponent(symbol)}/profile`, { params: { refresh } }).then(r => r.data);
 
 export const fetchOpportunityRadar = (market: 'all' | 'hk' | 'us' = 'all', lookbackDays = 10) =>
   api.get<OpportunityRadar>('/opportunity-radar', { params: { market, lookback_days: lookbackDays, mode: 'balanced' } }).then(r => r.data);

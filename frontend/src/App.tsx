@@ -55,6 +55,7 @@ import StockSelector from './components/StockSelector';
 import CandlestickChart from './components/CandlestickChart';
 import type { ChartPeriod } from './components/CandlestickChart';
 import { PERIOD_OPTIONS } from './components/CandlestickChart';
+import CompanyProfilePanel from './components/CompanyProfilePanel';
 import NewsPanel from './components/NewsPanel';
 import NewsCategoryPanel from './components/NewsCategoryPanel';
 import SimilarDaysPanel from './components/SimilarDaysPanel';
@@ -386,6 +387,7 @@ export default function App() {
           <div className="deep-layout">
             <div className="deep-market-stage">
               <div className="deep-chart-column">
+                <CompanyProfilePanel symbol={selectedSymbol} />
                 <NewsCategoryPanel
                   symbol={selectedSymbol}
                   activeCategory={activeCategory}

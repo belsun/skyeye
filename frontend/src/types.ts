@@ -319,6 +319,47 @@ export interface SearchData {
   results: SearchResult[];
 }
 
+export interface CompanyProfileNews {
+  id: string;
+  title: string;
+  description?: string | null;
+  publisher?: string | null;
+  published_utc?: string | null;
+  article_url?: string | null;
+  image_url?: string | null;
+  sentiment?: string | null;
+  chinese_summary?: string | null;
+}
+
+export interface CompanyProfile {
+  symbol: string;
+  name: string;
+  name_zh?: string | null;
+  market?: string | null;
+  sector?: string | null;
+  industry?: string | null;
+  website?: string | null;
+  ir_url?: string | null;
+  filings_url?: string | null;
+  financials_url?: string | null;
+  country?: string | null;
+  currency?: string | null;
+  employees?: number | null;
+  summary?: string | null;
+  summary_zh?: string | null;
+  source?: string | null;
+  fetched_at?: string | null;
+  links?: Record<string, string>;
+  recent_news: CompanyProfileNews[];
+  data_status: {
+    last_news_fetch?: string | null;
+    last_ohlc_fetch?: string | null;
+    profile_cache?: string | null;
+    cache_policy: string;
+    refresh_hint: string;
+  };
+}
+
 // ============ Stock Deep Analysis ============
 export interface OHLCRow {
   date: string;

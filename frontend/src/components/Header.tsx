@@ -171,9 +171,9 @@ export default function Header({
             title="配色方案 / Theme"
             onChange={(e) => onThemeChange(e.target.value as 'midnight' | 'hk' | 'terminal')}
           >
-            <option value="midnight">Midnight</option>
-            <option value="hk">HK Tech</option>
-            <option value="terminal">Terminal</option>
+            <option value="midnight">深夜蓝</option>
+            <option value="hk">港股科技</option>
+            <option value="terminal">交易终端</option>
           </select>
           <div className="lang-toggle" title="语言 / Language">
             {(['zh', 'en', 'both'] as const).map((mode) => (
@@ -199,7 +199,7 @@ export default function Header({
         )}
         <div className="live-indicator">
           <span className="live-dot" />
-          <span className="live-text">LIVE</span>
+          <span className="live-text">实时</span>
         </div>
         <span className="header-clock">{clock}</span>
         <a className="github-link" href="https://github.com/belsun" target="_blank" rel="noreferrer">

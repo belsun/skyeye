@@ -106,6 +106,25 @@ CREATE TABLE IF NOT EXISTS paper_positions (
     PRIMARY KEY (book_id, symbol),
     FOREIGN KEY (book_id) REFERENCES paper_books(id)
 );
+CREATE TABLE IF NOT EXISTS company_profiles (
+    symbol TEXT PRIMARY KEY,
+    name TEXT,
+    name_zh TEXT,
+    market TEXT,
+    sector TEXT,
+    industry TEXT,
+    website TEXT,
+    ir_url TEXT,
+    filings_url TEXT,
+    financials_url TEXT,
+    country TEXT,
+    currency TEXT,
+    employees INTEGER,
+    summary TEXT,
+    summary_zh TEXT,
+    source TEXT,
+    fetched_at TEXT
+);
 """
 
 def get_conn():
@@ -122,5 +141,17 @@ def init_db():
     if "image_url" not in cols:
         conn.execute("ALTER TABLE news_raw ADD COLUMN image_url TEXT")
         conn.commit()
+    profile_cols = {row["name"] for row in conn.execute("PRAGMA table_info(company_profiles)").fetchall()}
+    for col, ddl in {
+        "name_zh": "TEXT",
+        "ir_url": "TEXT",
+        "filings_url": "TEXT",
+        "financials_url": "TEXT",
+        "summary_zh": "TEXT",
+        "fetched_at": "TEXT",
+    }.items():
+        if col not in profile_cols:
+            conn.execute(f"ALTER TABLE company_profiles ADD COLUMN {col} {ddl}")
+            conn.commit()
     conn.close()
     print(f"Database initialized at {DATABASE_PATH}")

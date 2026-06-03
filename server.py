@@ -4,11 +4,13 @@
 Unified financial intelligence platform combining market overview, deep analysis, and ML pipeline
 """
 
-from fastapi import FastAPI
+import os
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from pathlib import Path
 
 from database import init_db
@@ -24,6 +26,22 @@ app.add_middleware(
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=500)
+
+LOCAL_CLIENTS = {"127.0.0.1", "::1", "localhost"}
+
+
+@app.middleware("http")
+async def local_only_guard(request: Request, call_next):
+    if os.getenv("SKYEYE_ALLOW_REMOTE") == "1":
+        return await call_next(request)
+
+    client_host = request.client.host if request.client else ""
+    if client_host not in LOCAL_CLIENTS:
+        return PlainTextResponse(
+            "SkyEye is running in local-only mode. Set SKYEYE_ALLOW_REMOTE=1 to allow remote clients.",
+            status_code=403,
+        )
+    return await call_next(request)
 
 # Import routers
 from routers import market, stocks, news, analysis, predict, portfolio, geopolitical, events, market_sectors, opportunity, paper
@@ -148,5 +166,7 @@ if static_dir.exists():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 天眼 SkyEye v5: http://localhost:8888")
-    uvicorn.run(app, host="0.0.0.0", port=8888)
+    host = os.getenv("SKYEYE_HOST", "127.0.0.1")
+    port = int(os.getenv("SKYEYE_PORT", "8888"))
+    print(f"🚀 天眼 SkyEye v5: http://{host}:{port}")
+    uvicorn.run(app, host=host, port=port)

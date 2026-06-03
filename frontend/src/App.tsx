@@ -56,6 +56,7 @@ import CandlestickChart from './components/CandlestickChart';
 import type { ChartPeriod } from './components/CandlestickChart';
 import { PERIOD_OPTIONS } from './components/CandlestickChart';
 import CompanyProfilePanel from './components/CompanyProfilePanel';
+import CompanyNewsTimeline from './components/CompanyNewsTimeline';
 import NewsPanel from './components/NewsPanel';
 import NewsCategoryPanel from './components/NewsCategoryPanel';
 import SimilarDaysPanel from './components/SimilarDaysPanel';
@@ -403,12 +404,7 @@ export default function App() {
           <div className="deep-layout">
             <div className="deep-market-stage">
               <div className="deep-chart-column">
-                <CompanyProfilePanel symbol={selectedSymbol} />
-                <NewsCategoryPanel
-                  symbol={selectedSymbol}
-                  activeCategory={activeCategory}
-                  onCategoryChange={handleCategoryChange}
-                />
+                <CompanyProfilePanel symbol={selectedSymbol} showRecentNews={false} />
 
                 <div className="deep-chart-area">
                   <div className="period-tabs">
@@ -434,18 +430,31 @@ export default function App() {
                     onDayClick={handleDayClick}
                   />
                 </div>
+
+                <CompanyNewsTimeline symbol={selectedSymbol} />
               </div>
 
-              <div className="deep-news-column">
+              <aside className="deep-news-column">
+                <NewsCategoryPanel
+                  symbol={selectedSymbol}
+                  activeCategory={activeCategory}
+                  onCategoryChange={handleCategoryChange}
+                  scope="external"
+                  title="外部影响过滤"
+                  description="行业、政策、竞争、资本市场等非公司主体变量。"
+                />
                 <NewsPanel
                   symbol={selectedSymbol}
                   hoveredDate={hoveredDate}
+                  title="外部影响雷达"
+                  subtitle="点击 K 线日期，查看当日影响企业的外部动态。"
+                  emptyText="点击蜡烛图里的日期，右侧会显示行业、政策、竞争、宏观和供应链新闻。"
                   highlightedNewsId={lockedNewsId}
                   isLocked={!!lockedNewsId}
                   onUnlock={() => setLockedNewsId(null)}
                   highlightedCategoryIds={highlightedCategoryIds}
                 />
-              </div>
+              </aside>
             </div>
 
             <div className="deep-analysis-dashboard">

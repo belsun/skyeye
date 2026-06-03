@@ -4,6 +4,7 @@ import type { CompanyProfile } from '../types';
 
 interface Props {
   symbol: string;
+  showRecentNews?: boolean;
 }
 
 function shortDate(value?: string | null): string {
@@ -18,7 +19,7 @@ function sentimentText(value?: string | null): string {
   return '中性';
 }
 
-export default function CompanyProfilePanel({ symbol }: Props) {
+export default function CompanyProfilePanel({ symbol, showRecentNews = true }: Props) {
   const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -108,20 +109,22 @@ export default function CompanyProfilePanel({ symbol }: Props) {
         <span>{profile.data_status?.cache_policy}</span>
       </div>
 
-      <div className="company-profile-news">
-        <div className="company-profile-subtitle">最近相关新闻</div>
-        {profile.recent_news.length > 0 ? profile.recent_news.slice(0, 4).map((item) => (
-          <a key={item.id} href={item.article_url || undefined} target="_blank" rel="noreferrer">
-            <span>{item.publisher || '新闻源'} · {shortDate(item.published_utc)} · {sentimentText(item.sentiment)}</span>
-            <strong>{item.title}</strong>
-            {(item.chinese_summary || item.description) && <em>{item.chinese_summary || item.description}</em>}
-          </a>
-        )) : (
-          <div className="company-profile-no-news">
-            本地还没有这家公司的新闻索引。加入 Tracking 后会后台抓取；后续我会继续做“按需即时搜索 + 定期清理”。
-          </div>
-        )}
-      </div>
+      {showRecentNews && (
+        <div className="company-profile-news">
+          <div className="company-profile-subtitle">最近相关新闻</div>
+          {profile.recent_news.length > 0 ? profile.recent_news.slice(0, 4).map((item) => (
+            <a key={item.id} href={item.article_url || undefined} target="_blank" rel="noreferrer">
+              <span>{item.publisher || '新闻源'} · {shortDate(item.published_utc)} · {sentimentText(item.sentiment)}</span>
+              <strong>{item.title}</strong>
+              {(item.chinese_summary || item.description) && <em>{item.chinese_summary || item.description}</em>}
+            </a>
+          )) : (
+            <div className="company-profile-no-news">
+              本地还没有这家公司的新闻索引。加入 Tracking 后会后台抓取；后续我会继续做“按需即时搜索 + 定期清理”。
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }

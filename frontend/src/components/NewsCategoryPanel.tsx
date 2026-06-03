@@ -6,6 +6,9 @@ interface Props {
   symbol: string;
   activeCategory: string | null;
   onCategoryChange: (category: string | null, articleIds: string[], color?: string) => void;
+  scope?: 'all' | 'external' | 'company';
+  title?: string;
+  description?: string;
 }
 
 const CATEGORY_META: Record<string, { icon: string; zh: string; color: string }> = {
@@ -20,7 +23,17 @@ const CATEGORY_META: Record<string, { icon: string; zh: string; color: string }>
 
 type SentimentFilter = 'all' | 'positive' | 'negative';
 
-export default function NewsCategoryPanel({ symbol, activeCategory, onCategoryChange }: Props) {
+const EXTERNAL_KEYS = new Set(['market', 'policy', 'competition', 'ipo_financing']);
+const COMPANY_KEYS = new Set(['earnings', 'product_tech', 'management']);
+
+export default function NewsCategoryPanel({
+  symbol,
+  activeCategory,
+  onCategoryChange,
+  scope = 'all',
+  title,
+  description,
+}: Props) {
   const [categories, setCategories] = useState<Record<string, CategoryInfo>>({});
   const [sentimentFilter, setSentimentFilter] = useState<SentimentFilter>('all');
 
@@ -33,7 +46,12 @@ export default function NewsCategoryPanel({ symbol, activeCategory, onCategoryCh
 
   useEffect(() => { setSentimentFilter('all'); }, [activeCategory]);
 
-  const keys = Object.keys(categories).filter((k) => categories[k].count > 0);
+  const keys = Object.keys(categories).filter((k) => {
+    if (categories[k].count <= 0) return false;
+    if (scope === 'external') return EXTERNAL_KEYS.has(k);
+    if (scope === 'company') return COMPANY_KEYS.has(k);
+    return true;
+  });
   if (keys.length === 0) return null;
 
   function handleSentimentClick(filter: SentimentFilter) {
@@ -57,6 +75,12 @@ export default function NewsCategoryPanel({ symbol, activeCategory, onCategoryCh
 
   return (
     <div className="news-category-wrap">
+      {(title || description) && (
+        <div className="news-category-head">
+          {title && <h3>{title}</h3>}
+          {description && <p>{description}</p>}
+        </div>
+      )}
       <div className="news-category-bar">
         {keys.map((key) => {
           const cat = categories[key];

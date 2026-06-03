@@ -5,6 +5,9 @@ import type { StockNewsItem } from '../types';
 interface Props {
   symbol: string;
   hoveredDate: string | null;
+  title?: string;
+  subtitle?: string;
+  emptyText?: string;
   highlightedNewsId?: string | null;
   isLocked?: boolean;
   onUnlock?: () => void;
@@ -27,7 +30,17 @@ function pct(v: number | null) {
   return <span style={{ color, fontWeight: 600 }}>{pctVal > 0 ? '+' : ''}{pctVal.toFixed(2)}%</span>;
 }
 
-export default function NewsPanel({ symbol, hoveredDate, highlightedNewsId, isLocked, onUnlock, highlightedCategoryIds }: Props) {
+export default function NewsPanel({
+  symbol,
+  hoveredDate,
+  title = '新闻',
+  subtitle,
+  emptyText = '点击图表中的日期查看新闻',
+  highlightedNewsId,
+  isLocked,
+  onUnlock,
+  highlightedCategoryIds,
+}: Props) {
   const [news, setNews] = useState<StockNewsItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [displayDate, setDisplayDate] = useState<string | null>(null);
@@ -84,8 +97,13 @@ export default function NewsPanel({ symbol, hoveredDate, highlightedNewsId, isLo
   if (!displayDate) {
     return (
       <div className="news-panel">
-        <div className="news-panel-header"><h2>📰 新闻</h2></div>
-        <div className="news-empty">点击图表中的日期查看新闻</div>
+        <div className="news-panel-header">
+          <div>
+            <h2>{title}</h2>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+        </div>
+        <div className="news-empty">{emptyText}</div>
       </div>
     );
   }
@@ -93,7 +111,10 @@ export default function NewsPanel({ symbol, hoveredDate, highlightedNewsId, isLo
   return (
     <div className="news-panel">
       <div className="news-panel-header">
-        <h2>📰 新闻</h2>
+        <div>
+          <h2>{title}</h2>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
         <span className="news-date-badge">{displayDate}</span>
         <span className="news-count">{news.length} 篇</span>
         {isLocked && (

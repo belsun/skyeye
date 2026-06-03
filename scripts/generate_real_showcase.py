@@ -19,7 +19,8 @@ def font(size: int, bold: bool = False):
 
 
 F = {
-    "hero": font(58, True),
+    "hero": font(56, True),
+    "hero_safe": font(50, True),
     "h1": font(42, True),
     "h2": font(30, True),
     "body": font(23),
@@ -129,8 +130,11 @@ def label(draw: ImageDraw.ImageDraw, xy, text, accent):
 
 def draw_headline(draw: ImageDraw.ImageDraw, title: str, subtitle: str, accent, x=70, y=54, max_width=650):
     label(draw, (x, y), "SkyEye 实机界面", accent)
-    draw.text((x, y + 70), title, font=F["hero"], fill=(248, 250, 255))
-    ty = y + 154
+    ty = y + 70
+    for line in title.split("\n"):
+        draw.text((x, ty), line, font=F["hero_safe"], fill=(248, 250, 255))
+        ty += 60
+    ty += 12
     for line in wrap(draw, subtitle, max_width, F["body"])[:3]:
         draw.text((x, ty), line, font=F["body"], fill=(194, 205, 234))
         ty += 35
@@ -144,19 +148,21 @@ def make_kline_news():
     add_texture(d, accent)
 
     shot = Image.open(SHOTS / "real-nvda-company-loaded.png").convert("RGBA")
-    chart = crop_cover(shot, (0, 820, 1390, 1348), (940, 560))
-    paste_panel(img, chart, (58, 212, 1018, 782), radius=24, outline=(89, 148, 255, 150))
+    chart = crop_cover(shot, (0, 420, 1360, 980), (1130, 630))
+    paste_panel(img, chart, (46, 184, 1196, 828), radius=26, outline=(89, 148, 255, 155))
 
-    d.text((70, 58), "新闻与舆情解释 K 线", font=F["hero"], fill=(250, 252, 255))
-    d.text((72, 132), "放大一个异动节点，右侧自动拉出趋势相关新闻和一键分析结论。", font=F["body"], fill=(195, 207, 236))
+    d.rounded_rectangle((54, 38, 720, 182), radius=24, fill=(4, 10, 20, 232), outline=(90, 218, 255, 80), width=1)
+    d.text((78, 56), "点一下 K 线", font=F["hero_safe"], fill=(250, 252, 255))
+    d.text((78, 112), "新闻解释走势", font=F["hero_safe"], fill=(250, 252, 255))
+    d.text((80, 166), "价格、新闻节点、趋势解释和一键分析在同一张图里。", font=F["tiny"], fill=(195, 207, 236))
 
-    node = (760, 568)
-    lens_center = (720, 378)
+    node = (856, 604)
+    lens_center = (824, 394)
     r = 118
     d.line((node[0], node[1], lens_center[0] + 76, lens_center[1] + 76), fill=(*accent, 180), width=3)
     d.ellipse((node[0] - 10, node[1] - 10, node[0] + 10, node[1] + 10), fill=(255, 82, 105), outline=(255, 255, 255, 220), width=2)
 
-    zoom_src = chart.crop((690, 250, 850, 410)).resize((r * 2, r * 2), Image.Resampling.LANCZOS)
+    zoom_src = chart.crop((850, 270, 1030, 450)).resize((r * 2, r * 2), Image.Resampling.LANCZOS)
     lens_mask = Image.new("L", (r * 2, r * 2), 0)
     ImageDraw.Draw(lens_mask).ellipse((0, 0, r * 2 - 1, r * 2 - 1), fill=255)
     lens_shadow = Image.new("RGBA", (r * 2 + 40, r * 2 + 40), (0, 0, 0, 0))
@@ -168,35 +174,36 @@ def make_kline_news():
     d.ellipse((lens_center[0] - r, lens_center[1] - r, lens_center[0] + r, lens_center[1] + r), outline=(155, 233, 255, 230), width=5)
     d.line((lens_center[0] + 84, lens_center[1] + 84, lens_center[0] + 158, lens_center[1] + 158), fill=(155, 233, 255, 220), width=9)
 
-    panel = (1060, 130, 1528, 780)
+    panel = (1222, 184, 1548, 828)
     d.rounded_rectangle(panel, radius=24, fill=(11, 18, 34, 235), outline=(90, 160, 255, 120), width=2)
-    d.text((1088, 162), "节点相关新闻", font=F["h2"], fill=(250, 252, 255))
-    d.text((1088, 206), "NVDA · 2026-06-02 · 价格反应 +4.8%", font=F["small"], fill=(124, 234, 204))
+    d.text((1248, 216), "节点新闻证据", font=F["h2"], fill=(250, 252, 255))
+    d.text((1248, 258), "NVDA · 2026-06-02 · 价格 +4.8%", font=F["tiny"], fill=(124, 234, 204))
 
-    y = 252
+    y = 298
     news_items = [
         ("AI 需求", "Jensen Huang 称 AI 需求仍然强劲，数据中心收入继续超预期。", "+ 舆情强度 82"),
         ("产业链", "云厂商资本开支上修，HBM 与 GPU 供应链关注度同步升温。", "+ 产业链相关 76"),
         ("风险", "估值已经拥挤，若财报指引低于预期，波动可能放大。", "- 拥挤度扣分 18"),
     ]
     for tag, body, score in news_items:
-        d.rounded_rectangle((1088, y, 1500, y + 96), radius=14, fill=(21, 29, 50, 220), outline=(63, 87, 135, 130), width=1)
-        d.text((1108, y + 14), tag, font=F["small"], fill=(134, 226, 255))
-        for line in wrap(d, body, 296, F["tiny"])[:2]:
-            d.text((1108, y + 42), line, font=F["tiny"], fill=(222, 231, 248))
-            y += 19
-        d.text((1370, y + 4), score, font=F["tiny"], fill=(100, 245, 202))
-        y += 62
+        d.rounded_rectangle((1248, y, 1522, y + 92), radius=14, fill=(21, 29, 50, 220), outline=(63, 87, 135, 130), width=1)
+        d.text((1266, y + 13), tag, font=F["small"], fill=(134, 226, 255))
+        line_y = y + 40
+        for line in wrap(d, body, 198, F["tiny"])[:2]:
+            d.text((1266, line_y), line, font=F["tiny"], fill=(222, 231, 248))
+            line_y += 18
+        d.text((1266, y + 72), score, font=F["tiny"], fill=(100, 245, 202))
+        y += 102
 
-    d.rounded_rectangle((1088, 612, 1500, 704), radius=16, fill=(8, 28, 36, 235), outline=(93, 236, 200, 150), width=1)
-    d.text((1110, 632), "一键分析输出", font=F["small"], fill=(111, 244, 210))
+    d.rounded_rectangle((1248, 650, 1522, 744), radius=16, fill=(8, 28, 36, 235), outline=(93, 236, 200, 150), width=1)
+    d.text((1266, 670), "一键分析输出", font=F["small"], fill=(111, 244, 210))
     analysis = "短线价格反应与 AI/HBM 新闻同向；适合放入观察池，等待回踩支撑或新财报确认。"
-    ay = 660
-    for line in wrap(d, analysis, 350, F["tiny"])[:2]:
-        d.text((1110, ay), line, font=F["tiny"], fill=(236, 246, 255))
+    ay = 698
+    for line in wrap(d, analysis, 228, F["tiny"])[:2]:
+        d.text((1266, ay), line, font=F["tiny"], fill=(236, 246, 255))
         ay += 20
-    d.rounded_rectangle((1260, 724, 1500, 760), radius=18, fill=(115, 88, 255, 255))
-    d.text((1380, 742), "生成分析报告", font=F["small"], fill=(255, 255, 255), anchor="mm")
+    d.rounded_rectangle((1288, 772, 1522, 808), radius=18, fill=(115, 88, 255, 255))
+    d.text((1405, 790), "生成分析报告", font=F["small"], fill=(255, 255, 255), anchor="mm")
 
     img.save(MEDIA / "real-showcase-01-news-kline.png")
 
@@ -210,19 +217,20 @@ def make_news_dashboard():
     shot = Image.open(SHOTS / "real-overview-ready.png").convert("RGBA")
     screen = crop_cover(shot, (0, 0, shot.width, shot.height), (1020, 690))
     paste_panel(img, screen, (500, 74, 1530, 774), radius=28, outline=(141, 128, 255, 135))
+    d.rounded_rectangle((48, 48, 468, 304), radius=24, fill=(6, 10, 22, 205))
 
     draw_headline(
         d,
-        "综合新闻分析看板",
-        "把宏观、产业链、IPO、政策、财报和地缘事件合成一张可行动的热点地图。",
+        "风口雷达\n抓住热点",
+        "热点、风险和资产线索，先排序再模拟。",
         accent,
         x=70,
         y=58,
         max_width=390,
     )
 
-    d.rounded_rectangle((70, 314, 458, 764), radius=24, fill=(12, 18, 34, 225), outline=(120, 105, 255, 110), width=1)
-    d.text((98, 342), "今日热点排序", font=F["h2"], fill=(250, 252, 255))
+    d.rounded_rectangle((70, 340, 458, 790), radius=24, fill=(12, 18, 34, 225), outline=(120, 105, 255, 110), width=1)
+    d.text((98, 368), "今天该看什么", font=F["h2"], fill=(250, 252, 255))
     ranks = [
         ("AI算力 / HBM", 93, (99, 240, 213)),
         ("宏观流动性", 83, (125, 190, 255)),
@@ -230,7 +238,7 @@ def make_news_dashboard():
         ("机器人/自动驾驶", 70, (255, 142, 198)),
         ("加密基础设施", 63, (169, 139, 250)),
     ]
-    y = 394
+    y = 420
     for name, score, col in ranks:
         d.text((98, y), name, font=F["small"], fill=(232, 240, 255))
         d.rounded_rectangle((98, y + 28, 374, y + 40), radius=6, fill=(28, 36, 62, 255))
@@ -238,9 +246,9 @@ def make_news_dashboard():
         d.text((392, y + 12), str(score), font=F["h2"], fill=col, anchor="mm")
         y += 66
 
-    d.text((98, 706), "词云", font=F["small"], fill=(177, 188, 218))
+    d.text((98, 732), "词云", font=F["small"], fill=(177, 188, 218))
     x = 150
-    y = 696
+    y = 722
     words = [
         ("AI", 24, (98, 239, 215)),
         ("IPO", 18, (255, 202, 88)),
@@ -271,12 +279,12 @@ def make_company_loaded():
     img = gradient((8, 10, 20), (28, 15, 31))
     d = ImageDraw.Draw(img, "RGBA")
     add_texture(d, accent)
-    d.rounded_rectangle((48, 48, 530, 292), radius=26, fill=(6, 10, 22, 185))
+    d.rounded_rectangle((48, 48, 530, 314), radius=26, fill=(6, 10, 22, 210))
 
     draw_headline(
         d,
-        "公司不是一张空 K 线",
-        "新搜一家公司，先看它是谁、做什么、官网、公告、财报、最近新闻，再回到行情。",
+        "先懂公司\n再看 K 线",
+        "新搜一家公司，先看它是谁、做什么、官网、公告、财报和新闻，再回到行情。",
         accent,
         x=70,
         y=62,
@@ -302,7 +310,7 @@ def make_company_loaded():
     d.text((100, 764), "截图前等待公司、新闻、K线全部完成。", font=F["tiny"], fill=(230, 238, 252))
 
     shot = Image.open(SHOTS / "real-nvda-company-loaded.png").convert("RGBA")
-    screen = crop_cover(shot, (0, 50, 1410, 1335), (955, 735))
+    screen = crop_cover(shot, (0, 70, 1800, 1320), (955, 735))
     paste_panel(img, screen, (560, 74, 1532, 824), radius=30, outline=(255, 136, 198, 135))
 
     img.save(MEDIA / "real-showcase-03-company-to-macro.png")

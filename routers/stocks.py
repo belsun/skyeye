@@ -81,6 +81,104 @@ SECTOR_ZH = {
     "Utilities": "公用事业",
 }
 
+INSTRUMENT_LABELS = {
+    "equity": "股票/公司",
+    "index": "指数",
+    "crypto": "加密资产",
+    "commodity": "大宗商品",
+}
+
+TRACKER_METADATA = {
+    "^GSPC": {
+        "name": "S&P 500 Index",
+        "name_zh": "标普500指数",
+        "quote_venue": "S&P Dow Jones Indices / Yahoo Finance",
+        "quote_unit": "指数点",
+        "summary_zh": "标普500指数追踪美国大型上市公司的整体表现。它不是公司，适合用作美股风险偏好、流动性和大型科技权重变化的市场温度计。",
+        "focus": ["美联储利率预期", "大型科技权重", "企业盈利周期", "美元与美债收益率"],
+    },
+    "^IXIC": {
+        "name": "Nasdaq Composite",
+        "name_zh": "纳斯达克综合指数",
+        "quote_venue": "Nasdaq / Yahoo Finance",
+        "quote_unit": "指数点",
+        "summary_zh": "纳斯达克综合指数反映科技与成长股风险偏好。它不是公司，应重点跟踪AI、半导体、软件估值、利率预期和科技股盈利修正。",
+        "focus": ["AI与半导体景气", "成长股估值", "美债实际利率", "科技财报"],
+    },
+    "^DJI": {
+        "name": "Dow Jones Industrial Average",
+        "name_zh": "道琼斯工业平均指数",
+        "quote_venue": "S&P Dow Jones Indices / Yahoo Finance",
+        "quote_unit": "指数点",
+        "summary_zh": "道琼斯工业平均指数追踪美国蓝筹股表现。它不是公司，更像传统经济、工业、金融和消费龙头的市场情绪追踪器。",
+        "focus": ["蓝筹股盈利", "工业周期", "金融条件", "避险情绪"],
+    },
+    "^HSI": {
+        "name": "Hang Seng Index",
+        "name_zh": "恒生指数",
+        "quote_venue": "Hang Seng Indexes / Yahoo Finance",
+        "quote_unit": "指数点",
+        "summary_zh": "恒生指数反映香港市场核心权重股表现。它不是公司，适合跟踪南向资金、港股科技权重、中国宏观预期和美元流动性。",
+        "focus": ["南向资金", "中国政策预期", "港股科技权重", "美元与港元流动性"],
+    },
+    "BTC-USD": {
+        "name": "Bitcoin USD",
+        "name_zh": "比特币 / BTC",
+        "quote_venue": "Crypto spot composite / USD",
+        "quote_unit": "USD per BTC",
+        "summary_zh": "BTC-USD 是比特币兑美元的综合现货报价，不是公司。它应作为加密风险偏好追踪器，重点看ETF资金流、链上活跃度、美元流动性、监管和交易所风险。",
+        "focus": ["ETF资金流", "美元流动性", "链上活跃度", "监管政策", "交易所风险"],
+    },
+    "ETH-USD": {
+        "name": "Ethereum USD",
+        "name_zh": "以太坊 / ETH",
+        "quote_venue": "Crypto spot composite / USD",
+        "quote_unit": "USD per ETH",
+        "summary_zh": "ETH-USD 是以太坊兑美元的综合现货报价，不是公司。它适合跟踪链上应用活跃度、质押收益、ETF资金流、Layer2生态和监管预期。",
+        "focus": ["ETF资金流", "链上费用", "质押收益", "Layer2生态", "监管政策"],
+    },
+    "SOL-USD": {
+        "name": "Solana USD",
+        "name_zh": "Solana / SOL",
+        "quote_venue": "Crypto spot composite / USD",
+        "quote_unit": "USD per SOL",
+        "summary_zh": "SOL-USD 是 Solana 兑美元的综合现货报价，不是公司。它适合跟踪高性能公链生态、链上交易量、应用热度、资金轮动和加密市场风险偏好。",
+        "focus": ["链上交易量", "生态应用热度", "资金轮动", "稳定币流入", "网络稳定性"],
+    },
+    "GC=F": {
+        "name": "Gold Futures",
+        "name_zh": "黄金期货",
+        "quote_venue": "COMEX Gold Futures / Yahoo Finance",
+        "quote_unit": "USD per troy ounce",
+        "summary_zh": "GC=F 是黄金期货连续合约报价，不是公司。它更像宏观避险和实际利率追踪器，应重点看美债实际收益率、美元指数、央行购金、地缘风险和通胀预期。",
+        "focus": ["实际利率", "美元指数", "央行购金", "地缘风险", "通胀预期"],
+    },
+    "CL=F": {
+        "name": "WTI Crude Oil Futures",
+        "name_zh": "WTI原油期货",
+        "quote_venue": "NYMEX WTI Crude Futures / Yahoo Finance",
+        "quote_unit": "USD per barrel",
+        "summary_zh": "CL=F 是 WTI 原油期货连续合约报价，不是公司。它适合作为能源供需追踪器，重点看OPEC+政策、库存、地缘冲突、炼厂需求和全球增长预期。",
+        "focus": ["OPEC+产量", "EIA库存", "地缘冲突", "炼厂需求", "全球增长预期"],
+    },
+    "SI=F": {
+        "name": "Silver Futures",
+        "name_zh": "白银期货",
+        "quote_venue": "COMEX Silver Futures / Yahoo Finance",
+        "quote_unit": "USD per troy ounce",
+        "summary_zh": "SI=F 是白银期货连续合约报价，不是公司。它同时受贵金属避险和工业需求影响，适合跟踪实际利率、美元、光伏需求和工业周期。",
+        "focus": ["实际利率", "美元指数", "光伏需求", "工业周期", "金银比"],
+    },
+    "NG=F": {
+        "name": "Natural Gas Futures",
+        "name_zh": "天然气期货",
+        "quote_venue": "NYMEX Natural Gas Futures / Yahoo Finance",
+        "quote_unit": "USD per MMBtu",
+        "summary_zh": "NG=F 是天然气期货连续合约报价，不是公司。它适合作为能源供需与天气追踪器，重点看库存、气温、LNG出口、产量和季节性需求。",
+        "focus": ["天气预报", "EIA库存", "LNG出口", "产量", "季节性需求"],
+    },
+}
+
 class AddTickerRequest(BaseModel):
     symbol: str
     name: Optional[str] = None
@@ -144,6 +242,110 @@ def _market_for_symbol(symbol: str) -> str:
     if symbol.endswith("=F"):
         return "大宗商品"
     return "美股"
+
+def _instrument_type(symbol: str) -> str:
+    if symbol.startswith("^"):
+        return "index"
+    if symbol.endswith("-USD"):
+        return "crypto"
+    if symbol.endswith("=F"):
+        return "commodity"
+    return "equity"
+
+def _quote_links(symbol: str, instrument_type: str) -> dict:
+    sym = symbol.upper()
+    yahoo = f"https://finance.yahoo.com/quote/{quote_plus(sym)}"
+    tradingview_symbol = sym.replace("-", "").replace("=F", "1!")
+    links = {
+        "Yahoo行情": yahoo,
+        "TradingView": f"https://www.tradingview.com/symbols/{quote_plus(tradingview_symbol)}/",
+    }
+    if instrument_type == "crypto":
+        coin = sym.split("-")[0].lower()
+        slug_map = {"btc": "bitcoin", "eth": "ethereum", "sol": "solana"}
+        slug = slug_map.get(coin, coin)
+        links.update({
+            "CoinMarketCap": f"https://coinmarketcap.com/currencies/{slug}/",
+            "CoinGecko": f"https://www.coingecko.com/en/coins/{slug}",
+        })
+    elif instrument_type == "commodity":
+        if sym.startswith("GC") or sym.startswith("SI"):
+            links["CME合约"] = "https://www.cmegroup.com/markets/metals.html"
+        elif sym.startswith("CL") or sym.startswith("NG"):
+            links["CME能源"] = "https://www.cmegroup.com/markets/energy.html"
+    elif instrument_type == "index":
+        links["指数说明"] = yahoo
+    return links
+
+def _tracker_summary(symbol: str, instrument_type: str, name: str) -> str:
+    meta = TRACKER_METADATA.get(symbol, {})
+    if meta.get("summary_zh"):
+        return meta["summary_zh"]
+    label = INSTRUMENT_LABELS.get(instrument_type, "行情标的")
+    if instrument_type == "crypto":
+        return f"{name} 是加密资产兑美元报价，不是公司。这里应作为价格与舆情追踪器：重点跟踪资金流、交易所风险、监管政策、链上活跃度和美元流动性。"
+    if instrument_type == "commodity":
+        return f"{name} 是大宗商品或期货行情，不是公司。这里应作为供需和宏观变量追踪器：重点跟踪库存、产量、政策、天气、地缘风险和美元流动性。"
+    if instrument_type == "index":
+        return f"{name} 是市场指数，不是公司。这里应作为市场温度追踪器：重点跟踪权重板块、资金流、宏观政策、利率预期和风险偏好。"
+    return f"{name} 是{label}。"
+
+def _build_tracker_profile(symbol: str, refresh: bool = False) -> dict:
+    normalized = normalize_symbol(symbol)
+    instrument_type = _instrument_type(normalized)
+    meta = TRACKER_METADATA.get(normalized, {})
+    info = {}
+    source = "tracker"
+    if not meta:
+        try:
+            import yfinance as yf
+            info = yf.Ticker(normalized).info or {}
+            if info:
+                source = "yfinance"
+        except Exception:
+            info = {}
+
+    name = meta.get("name") or info.get("longName") or info.get("shortName") or normalized
+    links = _quote_links(normalized, instrument_type)
+    news = _recent_news_snapshot(normalized)
+    currency = info.get("currency") or ("USD" if instrument_type in {"crypto", "commodity"} else None)
+    profile = {
+        "symbol": normalized,
+        "instrument_type": instrument_type,
+        "instrument_label": INSTRUMENT_LABELS.get(instrument_type, "行情标的"),
+        "profile_kicker": "行情追踪档案",
+        "profile_title": "行情档案",
+        "name": name,
+        "name_zh": meta.get("name_zh") or name,
+        "market": _market_for_symbol(normalized),
+        "sector": INSTRUMENT_LABELS.get(instrument_type),
+        "industry": None,
+        "website": "",
+        "ir_url": "",
+        "filings_url": "",
+        "financials_url": links.get("Yahoo行情", ""),
+        "country": None,
+        "currency": currency,
+        "employees": None,
+        "quote_venue": meta.get("quote_venue") or "Composite market quote",
+        "quote_unit": meta.get("quote_unit") or ("USD quote" if currency == "USD" else "行情点位"),
+        "tracker_focus": meta.get("focus") or [],
+        "summary": "",
+        "summary_zh": _tracker_summary(normalized, instrument_type, name),
+        "source": source,
+        "fetched_at": _now_iso(),
+        "cache_status": "refreshed" if refresh else "fresh",
+        "links": links,
+        "recent_news": news["items"],
+        "data_status": {
+            "last_news_fetch": news["last_news_fetch"],
+            "last_ohlc_fetch": news["last_ohlc_fetch"],
+            "profile_cache": "tracker",
+            "cache_policy": "行情数据和相关新闻按标的缓存；这里只保存标题、摘要、链接、来源、时间和分析结果，不保存正文全文。",
+            "refresh_hint": "这类行情标的适合高频刷新：价格走K线，新闻和事件按需抓取，后续可加定时轮询与异常提醒。",
+        },
+    }
+    return profile
 
 def _hkex_code(symbol: str) -> str:
     if symbol.endswith(".HK"):
@@ -277,6 +479,10 @@ def _recent_news_snapshot(symbol: str, limit: int = 6) -> dict:
 
 def _build_profile(symbol: str, refresh: bool = False) -> dict:
     normalized = normalize_symbol(symbol)
+    instrument_type = _instrument_type(normalized)
+    if instrument_type != "equity":
+        return _build_tracker_profile(normalized, refresh=refresh)
+
     cached = _cached_profile(normalized)
     if cached and cached.get("cache_status") == "fresh" and not refresh:
         profile = cached
@@ -299,6 +505,10 @@ def _build_profile(symbol: str, refresh: bool = False) -> dict:
         links = _default_links(normalized, website)
         profile = {
             "symbol": normalized,
+            "instrument_type": "equity",
+            "instrument_label": "股票/公司",
+            "profile_kicker": "公司档案",
+            "profile_title": "公司档案",
             "name": name,
             "name_zh": curated.get("name") or name,
             "market": _market_for_symbol(normalized),
@@ -325,6 +535,10 @@ def _build_profile(symbol: str, refresh: bool = False) -> dict:
         "公告/监管文件": profile.get("filings_url") or "",
         "财务报表": profile.get("financials_url") or "",
     }
+    profile["instrument_type"] = "equity"
+    profile["instrument_label"] = "股票/公司"
+    profile["profile_kicker"] = "公司档案"
+    profile["profile_title"] = "公司档案"
     profile["recent_news"] = news["items"]
     profile["data_status"] = {
         "last_news_fetch": news["last_news_fetch"],

@@ -18,6 +18,10 @@ function sentimentLabel(value?: string | null): string {
   return '中性';
 }
 
+function isCompanyProfile(profile?: CompanyProfile | null): boolean {
+  return !profile?.instrument_type || profile.instrument_type === 'equity';
+}
+
 export default function CompanyNewsTimeline({ symbol }: Props) {
   const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [loading, setLoading] = useState(false);
@@ -32,13 +36,14 @@ export default function CompanyNewsTimeline({ symbol }: Props) {
   }, [symbol]);
 
   const items = profile?.recent_news || [];
+  const isCompany = isCompanyProfile(profile);
 
   return (
     <section className="company-news-timeline">
       <div className="company-news-head">
         <div>
-          <span>公司新闻时间线</span>
-          <h3>企业自身动态，贴着 K 线看</h3>
+          <span>{isCompany ? '公司新闻时间线' : '行情事件时间线'}</span>
+          <h3>{isCompany ? '企业自身动态，贴着 K 线看' : '价格相关事件，贴着 K 线看'}</h3>
         </div>
         <em>{loading ? '更新中...' : `${items.length} 条`}</em>
       </div>
@@ -63,7 +68,9 @@ export default function CompanyNewsTimeline({ symbol }: Props) {
         </div>
       ) : (
         <div className="company-news-empty">
-          {loading ? '正在读取公司新闻...' : '暂未抓取到公司近期新闻。加入 Tracking 后会按需抓取，并定期清理旧缓存。'}
+          {loading
+            ? (isCompany ? '正在读取公司新闻...' : '正在读取行情事件...')
+            : (isCompany ? '暂未抓取到公司近期新闻。加入 Tracking 后会按需抓取，并定期清理旧缓存。' : '暂未抓取到相关事件。后续会按需抓取行情源、宏观事件和相关新闻，并定期清理旧缓存。')}
         </div>
       )}
     </section>

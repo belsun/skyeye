@@ -19,6 +19,10 @@ function sentimentText(value?: string | null): string {
   return '中性';
 }
 
+function isCompanyProfile(profile?: CompanyProfile | null): boolean {
+  return !profile?.instrument_type || profile.instrument_type === 'equity';
+}
+
 export default function CompanyProfilePanel({ symbol, showRecentNews = true }: Props) {
   const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +34,7 @@ export default function CompanyProfilePanel({ symbol, showRecentNews = true }: P
     setError('');
     fetchCompanyProfile(symbol, refresh)
       .then(setProfile)
-      .catch((err) => setError(err?.response?.data?.detail || err.message || '公司资料加载失败'))
+      .catch((err) => setError(err?.response?.data?.detail || err.message || '标的资料加载失败'))
       .finally(() => setLoading(false));
   }
 
@@ -43,7 +47,7 @@ export default function CompanyProfilePanel({ symbol, showRecentNews = true }: P
   if (error) {
     return (
       <div className="company-profile-panel company-profile-empty">
-        <div className="company-profile-title">公司档案</div>
+        <div className="company-profile-title">标的档案</div>
         <span>{error}</span>
         <button onClick={() => load(true)}>重试</button>
       </div>
@@ -53,47 +57,60 @@ export default function CompanyProfilePanel({ symbol, showRecentNews = true }: P
   if (!profile) {
     return (
       <div className="company-profile-panel company-profile-empty">
-        <div className="company-profile-title">公司档案</div>
-        <span>{loading ? '正在读取公司资料...' : '暂无公司资料'}</span>
+        <div className="company-profile-title">标的档案</div>
+        <span>{loading ? '正在读取标的资料...' : '暂无标的资料'}</span>
       </div>
     );
   }
 
+  const isCompany = isCompanyProfile(profile);
+  const profileSource = !isCompany && profile.source === 'tracker' ? '本地追踪库 + 公开行情源' : (profile.source || '本地/公开源');
+  const gridItems = isCompany ? [
+    ['主营业务', profile.industry || profile.sector || '待确认'],
+    ['国家/地区', profile.country || profile.market || '待确认'],
+    ['交易货币', profile.currency || '待确认'],
+    ['资料来源', profileSource],
+  ] : [
+    ['追踪对象', profile.instrument_label || profile.market || '行情标的'],
+    ['报价/交易场所', profile.quote_venue || profile.market || '待确认'],
+    ['计价单位', profile.quote_unit || profile.currency || '指数点/报价单位'],
+    ['行情来源', profileSource],
+  ];
   const links = Object.entries(profile.links || {}).filter(([, url]) => !!url);
 
   return (
     <section className="company-profile-panel">
       <div className="company-profile-head">
         <div>
-          <span className="company-profile-kicker">公司档案 / Company Profile</span>
+          <span className="company-profile-kicker">{profile.profile_kicker || (isCompany ? '公司档案' : '行情追踪档案')}</span>
           <h2>{profile.name_zh || profile.name || profile.symbol}</h2>
-          <p>{profile.symbol} · {profile.market || '市场未知'} · {profile.sector || '板块待确认'}</p>
+          <p>{profile.symbol} · {profile.market || '市场未知'} · {profile.instrument_label || profile.sector || '标的类型待确认'}</p>
         </div>
         <button onClick={() => load(true)} disabled={loading}>
-          {loading ? '刷新中...' : '刷新资料'}
+          {loading ? '刷新中...' : (isCompany ? '刷新资料' : '刷新追踪')}
         </button>
       </div>
 
       <div className="company-profile-grid">
-        <div>
-          <span>主营业务</span>
-          <strong>{profile.industry || profile.sector || '待确认'}</strong>
-        </div>
-        <div>
-          <span>国家/地区</span>
-          <strong>{profile.country || profile.market || '待确认'}</strong>
-        </div>
-        <div>
-          <span>交易货币</span>
-          <strong>{profile.currency || '待确认'}</strong>
-        </div>
-        <div>
-          <span>资料来源</span>
-          <strong>{profile.source || '本地/公开源'}</strong>
-        </div>
+        {gridItems.map(([label, value]) => (
+          <div key={label}>
+            <span>{label}</span>
+            <strong>{value}</strong>
+          </div>
+        ))}
       </div>
 
-      <p className="company-profile-summary">{profile.summary_zh || profile.summary || '暂未获取到简介。建议先查看官网、投资者关系和最近公告。'}</p>
+      <p className="company-profile-summary">
+        {profile.summary_zh || profile.summary || (isCompany
+          ? '暂未获取到简介。建议先查看官网、投资者关系和最近公告。'
+          : '暂未获取到完整追踪描述。建议先查看报价源、交易场所、相关新闻和价格异动。')}
+      </p>
+
+      {!isCompany && profile.tracker_focus && profile.tracker_focus.length > 0 && (
+        <div className="tracker-focus-strip">
+          {profile.tracker_focus.slice(0, 6).map((item) => <span key={item}>{item}</span>)}
+        </div>
+      )}
 
       {links.length > 0 && (
         <div className="company-profile-links">
@@ -104,7 +121,7 @@ export default function CompanyProfilePanel({ symbol, showRecentNews = true }: P
       )}
 
       <div className="company-profile-cache">
-        <span>新闻缓存：最近抓取 {shortDate(profile.data_status?.last_news_fetch)}</span>
+        <span>{isCompany ? '新闻缓存' : '事件/新闻缓存'}：最近抓取 {shortDate(profile.data_status?.last_news_fetch)}</span>
         <span>K线缓存：最近抓取 {shortDate(profile.data_status?.last_ohlc_fetch)}</span>
         <span>{profile.data_status?.cache_policy}</span>
       </div>
@@ -120,7 +137,9 @@ export default function CompanyProfilePanel({ symbol, showRecentNews = true }: P
             </a>
           )) : (
             <div className="company-profile-no-news">
-              本地还没有这家公司的新闻索引。加入 Tracking 后会后台抓取；后续我会继续做“按需即时搜索 + 定期清理”。
+              {isCompany
+                ? '本地还没有这家公司的新闻索引。加入 Tracking 后会后台抓取；后续我会继续做“按需即时搜索 + 定期清理”。'
+                : '本地还没有这个行情标的的新闻/事件索引。后续会按需抓取报价源、宏观事件和相关新闻，并定期清理旧缓存。'}
             </div>
           )}
         </div>

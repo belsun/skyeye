@@ -333,6 +333,10 @@ export interface CompanyProfileNews {
 
 export interface CompanyProfile {
   symbol: string;
+  instrument_type?: 'equity' | 'index' | 'crypto' | 'commodity' | string;
+  instrument_label?: string | null;
+  profile_kicker?: string | null;
+  profile_title?: string | null;
   name: string;
   name_zh?: string | null;
   market?: string | null;
@@ -345,6 +349,9 @@ export interface CompanyProfile {
   country?: string | null;
   currency?: string | null;
   employees?: number | null;
+  quote_venue?: string | null;
+  quote_unit?: string | null;
+  tracker_focus?: string[];
   summary?: string | null;
   summary_zh?: string | null;
   source?: string | null;

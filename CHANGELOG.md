@@ -7,6 +7,8 @@ active, iterative product rather than a one-off dashboard.
 
 ### Added
 
+- Added a dedicated SkyEye SVG logo/favicon and wired it into the browser tab
+  icon and in-app header branding.
 - Added this changelog and linked it from the README so future bug fixes and
   product iterations have a visible release trail.
 - Added a stronger English GitHub product narrative focused on SkyEye as a

@@ -110,7 +110,7 @@ export default function Header({
           </button>
         ) : null}
         <div className="logo" onClick={viewMode === 'deep' ? onBack : undefined}>
-          <span className="logo-icon">👁️</span>
+          <img className="logo-icon" src="/favicon.svg" alt="" aria-hidden="true" />
           <span className="logo-text">天眼 SkyEye</span>
         </div>
       </div>

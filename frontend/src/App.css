@@ -164,7 +164,13 @@ body {
   white-space: nowrap;
 }
 
-.logo-icon { font-size: 16px; }
+.logo-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(136, 231, 255, 0.2), 0 0 14px rgba(82, 240, 200, 0.18);
+}
 
 .logo-text {
   font-size: 14px;

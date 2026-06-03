@@ -2,6 +2,8 @@
 
 Generated product-launch visuals for README, GitHub social preview, and Codex developer-program application materials.
 
+The current public showcase images use English product copy, while the underlying SkyEye app supports Chinese, English, and bilingual UI modes.
+
 ## 15-second videos
 
 - `01-opportunity-radar.mp4`

@@ -25,5 +25,6 @@ Generated product-launch visuals for README, GitHub social preview, and Codex de
 ## Raw real UI screenshots
 
 - `screenshots/real-overview-ready.png`
+- `screenshots/real-nvda-company-loaded.png`
 - `screenshots/real-nvda-deep-ready.png`
 - `screenshots/real-minimax-deep.png`
